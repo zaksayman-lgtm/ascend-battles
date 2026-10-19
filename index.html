@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascend Battles | Outcome XP Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #0c0e12;
+            --bg-card: #141820;
+            --bg-hover: #1c222d;
+            --border: #232b38;
+            --accent: #00f2fe;
+            --accent-glow: rgba(0, 242, 254, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #8492a6;
+            --green: #00b894;
+            --yellow: #f1c40f;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .logo { font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+        .badge { background: rgba(0,242,254,0.1); color: var(--accent); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        
+        .connect-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 10px 18px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .connect-btn:hover { box-shadow: 0 0 15px var(--accent-glow); opacity: 0.9; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media(min-width: 768px) {
+            .dashboard-grid { grid-template-columns: 320px 1fr; }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+        .card h3 { margin-top: 0; font-size: 15px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .stat-box { margin-bottom: 15px; }
+        .stat-val { font-size: 28px; font-weight: 800; color: var(--green); }
+        .sub-text { font-size: 12px; color: var(--text-muted); }
+
+        .arena-card {
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .matchup { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: bold; font-size: 16px; }
+        
+        .btn-group { display: flex; gap: 10px; }
+        .predict-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .predict-btn:hover { background: var(--accent); color: #000; }
+
+        .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .leaderboard-table th, .leaderboard-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+        .leaderboard-table th { color: var(--text-muted); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">ASCEND BATTLES <span class="badge">Outcome XP</span></div>
+        <button class="connect-btn" id="connectBtn" onclick="connectWallet()">Connected</button>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Player Profile</h3>
+            <div class="stat-box" style="margin-top: 15px;">
+                <div class="sub-text">Connected Wallet</div>
+                <div id="walletAddr" style="font-size: 13px; font-family: monospace; color: var(--accent); margin-top: 4px;">0xe110...cec4</div>
+            </div>
+            <div class="stat-box">
+                <div class="sub-text">Total Outcome XP</div>
+                <div id="userXP" class="stat-val">10 XP</div>
+            </div>
+            <div class="stat-box">
+                <div class="sub-text">Total Predictions</div>
+                <div id="userPredCount" style="font-size: 18px; font-weight: bold;">1</div>
+            </div>
+        </div>
+
+        <div>
+            <div class="card">
+                <h3>Live Prediction Arenas</h3>
+                <div id="arenasContainer">
+                    <div style="color: var(--text-muted); font-size: 13px;">Loading dynamic arenas from backend...</div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3>Global XP Leaderboard</h3>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Address</th>
+                            <th>XP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <tr>
+                            <td>#1</td>
+                            <td style="font-family:monospace;">0xe110...cec4</td>
+                            <td style="color: var(--green); font-weight:bold;">10 XP</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CONTRACT_ADDRESS = "0x19211E8Ff0ee62a48c4321e8a86B592f7f663542";
+
+        async function fetchArenas() {
+            try {
+                const res = await fetch("/api/arenas");
+                const arenas = await res.json();
+                const container = document.getElementById("arenasContainer");
+                container.innerHTML = "";
+
+                if (arenas.length === 0) {
+                    container.innerHTML = '<div style="color: var(--text-muted); font-size: 13px;">No active arenas found.</div>';
+                    return;
+                }
+
+                arenas.forEach(arena => {
+                    const card = document.createElement("div");
+                    card.className = "arena-card";
+                    card.innerHTML = `
+                        <div class="matchup">
+                            <span>${arena.projectA}</span>
+                            <span style="font-size: 12px; color: var(--yellow);">VS</span>
+                            <span>${arena.projectB}</span>
+                        </div>
+                        <div class="sub-text" style="margin-bottom: 12px;">Arena ID: #${arena.id} | XP Stake: 10 XP | Gas: 0.001 Testnet Token</div>
+                        <div class="btn-group">
+                            <button class="predict-btn" onclick="placePrediction(${arena.id}, 1)">Predict ${arena.projectA} (10 XP)</button>
+                            <button class="predict-btn" onclick="placePrediction(${arena.id}, 2)">Predict ${arena.projectB} (10 XP)</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Failed to load arenas:", err);
+                document.getElementById("arenasContainer").innerHTML = '<div style="color: #ff5252; font-size: 13px;">Failed to load active arenas from backend.</div>';
+            }
+        }
+
+        async function connectWallet() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const currentAccount = accounts[0];
+                    document.getElementById("walletAddr").innerText = currentAccount.substring(0, 6) + "..." + currentAccount.slice(-4);
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+        }
+
+        async function placePrediction(arenaId, team) {
+            if (!window.ethereum) return alert("Connect a Web3 wallet like MetaMask/OKX!");
+
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            
+            const abi = ["function predict(uint256 _arenaId, uint8 _team) payable"];
+            const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, signer);
+
+            try {
+                const tx = await contract.predict(arenaId, team, {
+                    value: ethers.utils.parseEther("0.001"),
+                    gasLimit: 200000
+                });
+                alert("Prediction transaction submitted: " + tx.hash);
+                await tx.wait();
+                alert("Prediction confirmed on-chain! XP updated.");
+                
+                document.getElementById("userXP").innerText = "20 XP";
+                document.getElementById("userPredCount").innerText = "2";
+            } catch (err) {
+                console.error("Prediction error:", err);
+                const reason = err.reason || err.message || "Transaction rejected";
+                alert("Error: " + reason);
+            }
+        }
+
+        // Load arenas on page load
+        fetchArenas();
+    </script>
+</body>
+</html>
