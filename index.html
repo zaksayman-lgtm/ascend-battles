@@ -6,16 +6,18 @@
     <title>Ascend Battles</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #0b0e11; color: #ffffff; padding: 16px; }
+        body { background-color: #0b0e11; color: #ffffff; padding: 16px; pb: 40px; }
 
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo { font-weight: 900; font-size: 20px; color: #fff; }
+        .logo { font-weight: 900; font-size: 20px; color: #fff; letter-spacing: -0.5px; }
         .logo span { color: #00e676; }
-        .connect-btn { background: #0b3d2e; border: 1px solid #00e676; color: #00e676; padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; }
+        .connect-btn { background: #0b3d2e; border: 1px solid #00e676; color: #00e676; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
         .connect-btn.connected { background: rgba(0, 230, 118, 0.15); }
 
-        .notice-card { background: #13171d; border: 1px solid #1f2630; border-radius: 10px; padding: 12px; margin-bottom: 16px; }
-        .notice-card p { color: #9aa4b2; font-size: 13px; line-height: 1.4; }
+        /* Notice Card with Learn More */
+        .notice-card { background: #13171d; border: 1px solid #1f2630; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .notice-card p { color: #9aa4b2; font-size: 13px; line-height: 1.4; flex: 1; }
+        .learn-more-btn { color: #00e676; font-weight: 700; font-size: 12px; background: none; border: none; cursor: pointer; text-decoration: underline; white-space: nowrap; }
 
         .airdrop-card { background: #13171d; border: 1px solid #1f2630; border-radius: 12px; padding: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
         .airdrop-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
@@ -35,17 +37,28 @@
         .battle-card { background: #13171d; border: 1px solid #1f2630; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
         .battle-meta { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 12px; }
         .tag { color: #00e676; background: rgba(0, 230, 118, 0.1); padding: 2px 6px; border-radius: 4px; font-weight: 700; }
-        .timer { color: #ffb74d; }
+        .timer { color: #ffb74d; font-weight: 600; }
 
         .competitor { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .comp-info { display: flex; align-items: center; gap: 8px; }
-        .icon { width: 28px; height: 28px; border-radius: 50%; background: #ffb703; color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+        .icon { width: 28px; height: 28px; border-radius: 50%; background: #ffb703; color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 10px; }
         .comp-name { font-weight: 700; font-size: 14px; }
         .odds-btn { background: #ffb703; color: #000; border: none; padding: 6px 14px; border-radius: 16px; font-weight: 800; font-size: 12px; cursor: pointer; }
 
-        .battle-footer { display: flex; justify-content: space-between; font-size: 11px; color: #6b7785; border-top: 1px solid #1f2630; pt: 10px; margin-top: 10px; padding-top: 10px; }
+        .battle-footer { display: flex; justify-content: space-between; font-size: 11px; color: #6b7785; border-top: 1px solid #1f2630; padding-top: 10px; margin-top: 10px; }
         .sponsor span { color: #00e676; font-weight: 600; }
         .predictors span { color: #ffffff; font-weight: 600; }
+
+        /* Modal Overlay for Learn More */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.open { display: flex; }
+        .modal-content { background: #13171d; border: 1px solid #00e67666; border-radius: 16px; padding: 20px; max-width: 420px; width: 100%; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #1f2630; padding-bottom: 10px; }
+        .modal-title { font-size: 18px; font-weight: 800; color: #00e676; }
+        .close-btn { background: none; border: none; color: #6b7785; font-size: 20px; font-weight: 800; cursor: pointer; }
+        .modal-body { font-size: 13px; color: #9aa4b2; line-height: 1.6; }
+        .modal-body ul { margin-left: 18px; margin-top: 8px; margin-bottom: 12px; }
+        .modal-body li { margin-bottom: 6px; }
 
         .loading-text { text-align: center; color: #6b7785; font-size: 13px; padding: 20px; }
     </style>
@@ -57,8 +70,10 @@
         <button id="connectBtn" class="connect-btn" onclick="connectWallet()">Connect Wallet</button>
     </div>
 
+    <!-- Notice Card with Learn More Button -->
     <div class="notice-card">
         <p>Ascend Battles uses free <strong>XP</strong> for prediction trading. No real funds are involved.</p>
+        <button class="learn-more-btn" onclick="openModal()">Learn More</button>
     </div>
 
     <div class="airdrop-card">
@@ -74,7 +89,7 @@
             <div class="portfolio-title">Portfolio XP Balance</div>
             <div id="portfolioValue" class="portfolio-value">0 XP</div>
         </div>
-        <button class="earn-btn">Earn XP</button>
+        <button class="earn-btn" onclick="alert('Earn extra XP by predicting live matchups!')">Earn XP</button>
     </div>
 
     <div class="section-header">
@@ -83,7 +98,29 @@
     </div>
 
     <div id="arenasContainer">
-        <div class="loading-text">Fetching live arenas from backend...</div>
+        <div class="loading-text">Fetching live arenas...</div>
+    </div>
+
+    <!-- Learn More Modal Popup -->
+    <div id="learnModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">About Ascend Battles</div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Ascend Battles</strong> is an automated project matchmaking and 1v1 prediction trading platform built for Web3 ecosystems.</p>
+                <br>
+                <p><strong>How It Works:</strong></p>
+                <ul>
+                    <li><strong>Web3 Wallet Sync:</strong> Connect your wallet securely using standard Web3 providers.</li>
+                    <li><strong>Free XP System:</strong> Claim your welcome airdrop of +200 XP to get started with zero financial risk.</li>
+                    <li><strong>Predict Matchups:</strong> Back top projects like Incentiv ($CENT), Mavryk ($MVRK), or Verse8 in head-to-head performance battles.</li>
+                    <li><strong>Leaderboards & Rewards:</strong> Accumulate XP for correct predictions to climb global rankings and unlock future ecosystem allocations.</li>
+                </ul>
+                <p style="color: #6b7785; font-size: 11px;">Powered by Elysium Testnet API & Render backend listener.</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -91,7 +128,16 @@
         let connectedAccount = null;
         const BACKEND_URL = 'https://ascend-battles-2.onrender.com';
 
-        // 1. Real Web3 Wallet Connection Logic
+        // Modal Controls
+        function openModal() {
+            document.getElementById('learnModal').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('learnModal').classList.remove('open');
+        }
+
+        // Web3 Wallet Connection Logic
         async function connectWallet() {
             const btn = document.getElementById('connectBtn');
             if (typeof window.ethereum !== 'undefined') {
@@ -102,30 +148,13 @@
                     btn.innerText = shortAddr;
                     btn.classList.add('connected');
                 } catch (err) {
-                    alert('Wallet connection rejected or failed: ' + err.message);
+                    alert('Wallet connection failed: ' + err.message);
                 }
             } else {
-                alert('No Web3 wallet detected. Please open this page inside MetaMask Browser, Trust Wallet, or install the MetaMask extension.');
+                alert('No Web3 wallet detected. Open in MetaMask browser or Web3 extension.');
             }
         }
 
-        // Handle Account Changes dynamically
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum.on('accountsChanged', (accounts) => {
-                const btn = document.getElementById('connectBtn');
-                if (accounts.length > 0) {
-                    connectedAccount = accounts[0];
-                    btn.innerText = connectedAccount.substring(0, 6) + '...' + connectedAccount.substring(connectedAccount.length - 4);
-                    btn.classList.add('connected');
-                } else {
-                    connectedAccount = null;
-                    btn.innerText = 'Connect Wallet';
-                    btn.classList.remove('connected');
-                }
-            });
-        }
-
-        // 2. Claim Airdrop State Update
         function claimAirdrop() {
             if (!connectedAccount) {
                 alert('Please connect your Web3 wallet first!');
@@ -138,66 +167,11 @@
             claimBtn.disabled = true;
         }
 
-        // 3. Load Arenas directly from Render Backend API
-        async function loadArenas() {
-            const container = document.getElementById('arenasContainer');
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/arenas`);
-                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-                
-                const arenas = await response.json();
-                container.innerHTML = '';
-
-                arenas.forEach(arena => {
-                    const card = document.createElement('div');
-                    card.className = 'battle-card';
-                    card.innerHTML = `
-                        <div class="battle-meta">
-                            <span class="tag">${arena.category}</span>
-                            <span class="timer">${arena.timer}</span>
-                        </div>
-                        <div class="competitor">
-                            <div class="comp-info">
-                                <div class="icon">${arena.competitorA.code}</div>
-                                <div class="comp-name">${arena.competitorA.name}</div>
-                            </div>
-                            <button class="odds-btn" onclick="placePrediction(${arena.id}, '${arena.competitorA.name}')">${arena.competitorA.odds}x</button>
-                        </div>
-                        <div class="competitor">
-                            <div class="comp-info">
-                                <div class="icon" style="background: #29b6f6; color: #fff;">${arena.competitorB.code}</div>
-                                <div class="comp-name">${arena.competitorB.name}</div>
-                            </div>
-                            <button class="odds-btn" style="background: #29b6f6; color: #fff;" onclick="placePrediction(${arena.id}, '${arena.competitorB.name}')">${arena.competitorB.odds}x</button>
-                        </div>
-                        <div class="battle-footer">
-                            <div class="sponsor">Sponsor Pool: <span>${arena.sponsorPool}</span></div>
-                            <div class="predictors">Predictors: <span>${arena.predictors} Players</span></div>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (err) {
-                container.innerHTML = `<div class="loading-text" style="color: #ff5252;">Failed to load live backend data. Error: ${err.message}</div>`;
-            }
-        }
-
-        function placePrediction(arenaId, competitor) {
-            if (!connectedAccount) {
-                alert('Please connect your Web3 wallet to place a prediction.');
-                return;
-            }
-            if (currentXP < 10) {
-                alert('You need at least 10 XP to place a prediction! Claim your welcome airdrop first.');
-                return;
-            }
-            currentXP -= 10;
-            document.getElementById('portfolioValue').innerText = currentXP + ' XP';
-            alert(`Prediction placed on ${competitor}! 10 XP deducted.`);
-        }
-
-        // Initialize API call on page load
-        loadArenas();
-    </script>
-</body>
-</html>
+        // Ecosystem Fallback Arenas
+        const defaultArenas = [
+            {
+                id: 1,
+                category: "WEB3 ECOSYSTEM vs ECOSYSTEM",
+                timer: "Closes in 04h 22m",
+                competitorA: { name: "Incentiv ($CENT)", code: "CENT", odds: "1.85" },
+                competitorB: { name: "Mavryk Network ($MVRK)", code: "MVRK", odds:
