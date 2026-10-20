@@ -1,0 +1,17 @@
+{
+  "0xe11089f3a5c72d755b2e560f25c2b5016ed4cec4": {
+    "totalXP": 350,
+    "history": [
+      {
+        "amount": 100,
+        "reason": "Placed prediction on Arena #1",
+        "timestamp": "2026-10-15T20:51:36.922Z"
+      },
+      {
+        "amount": 250,
+        "reason": "Won prediction on Arena #1 (Project Alpha)",
+        "timestamp": "2026-10-15T20:51:36.937Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+allowBuilds:
+  classic-level: true
+  keccak: true
+  secp256k1: true

@@ -1,0 +1,1 @@
+{"name":"contracts","type":"module","dependencies":{"ethers":"^6.0.0","solc":"0.8.24"},"devDependencies":{"hardhat":"2.12.7"}}

@@ -1,0 +1,14 @@
+[
+  {
+    "id": 2,
+    "projectA": "Project Gamma",
+    "projectB": "Project Delta",
+    "active": true
+  },
+  {
+    "id": 3,
+    "projectA": "NewProjectX",
+    "projectB": "NewProjectY",
+    "active": true
+  }
+]
