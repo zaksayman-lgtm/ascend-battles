@@ -58,8 +58,6 @@
         .modal-body { font-size: 13px; color: #9aa4b2; line-height: 1.6; }
         .modal-body ul { margin-left: 18px; margin-top: 8px; margin-bottom: 12px; }
         .modal-body li { margin-bottom: 6px; }
-
-        .loading-text { text-align: center; color: #6b7785; font-size: 13px; padding: 20px; }
     </style>
 </head>
 <body>
@@ -96,7 +94,56 @@
     </div>
 
     <div id="arenasContainer">
-        <div class="loading-text">Loading arenas...</div>
+        <!-- Rendered instantly on load -->
+        <div class="battle-card">
+            <div class="battle-meta">
+                <span class="tag">WEB3 ECOSYSTEM vs ECOSYSTEM</span>
+                <span class="timer">Closes in 04h 22m</span>
+            </div>
+            <div class="competitor">
+                <div class="comp-info">
+                    <div class="icon">CENT</div>
+                    <div class="comp-name">Incentiv ($CENT)</div>
+                </div>
+                <button class="odds-btn" onclick="placePrediction(1, 'Incentiv ($CENT)')">1.85x</button>
+            </div>
+            <div class="competitor">
+                <div class="comp-info">
+                    <div class="icon" style="background: #29b6f6; color: #fff;">MVRK</div>
+                    <div class="comp-name">Mavryk Network ($MVRK)</div>
+                </div>
+                <button class="odds-btn" style="background: #29b6f6; color: #fff;" onclick="placePrediction(1, 'Mavryk Network ($MVRK)')">2.15x</button>
+            </div>
+            <div class="battle-footer">
+                <div class="sponsor">Sponsor Pool: <span>$50.00 USDC</span></div>
+                <div class="predictors">Predictors: <span>142 Players</span></div>
+            </div>
+        </div>
+
+        <div class="battle-card">
+            <div class="battle-meta">
+                <span class="tag">GAMEFI vs AI GAMING</span>
+                <span class="timer">Closes in 18h 05m</span>
+            </div>
+            <div class="competitor">
+                <div class="comp-info">
+                    <div class="icon">V8</div>
+                    <div class="comp-name">Verse8 AI Engine</div>
+                </div>
+                <button class="odds-btn" onclick="placePrediction(2, 'Verse8 AI Engine')">1.75x</button>
+            </div>
+            <div class="competitor">
+                <div class="comp-info">
+                    <div class="icon" style="background: #29b6f6; color: #fff;">DEGEN</div>
+                    <div class="comp-name">Degen Brawlers</div>
+                </div>
+                <button class="odds-btn" style="background: #29b6f6; color: #fff;" onclick="placePrediction(2, 'Degen Brawlers')">2.40x</button>
+            </div>
+            <div class="battle-footer">
+                <div class="sponsor">Sponsor Pool: <span>$100.00 USDC</span></div>
+                <div class="predictors">Predictors: <span>310 Players</span></div>
+            </div>
+        </div>
     </div>
 
     <!-- Learn More Modal -->
@@ -124,7 +171,6 @@
     <script>
         let currentXP = 0;
         let connectedAccount = null;
-        const BACKEND_URL = 'https://ascend-battles-2.onrender.com';
 
         function openModal() {
             document.getElementById('learnModal').classList.add('open');
@@ -141,4 +187,41 @@
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                     connectedAccount = accounts[0];
                     const shortAddr = connectedAccount.substring(0, 6) + '...' + connectedAccount.substring(connectedAccount.length - 4);
-                    btn.innerText =
+                    btn.innerText = shortAddr;
+                    btn.classList.add('connected');
+                } catch (err) {
+                    alert('Wallet connection failed: ' + err.message);
+                }
+            } else {
+                alert('No Web3 wallet detected. Open in MetaMask browser or Web3 extension.');
+            }
+        }
+
+        function claimAirdrop() {
+            if (!connectedAccount) {
+                alert('Please connect your Web3 wallet first!');
+                return;
+            }
+            currentXP += 200;
+            document.getElementById('portfolioValue').innerText = currentXP + ' XP';
+            const claimBtn = document.getElementById('claimBtn');
+            claimBtn.innerText = 'Claimed';
+            claimBtn.disabled = true;
+        }
+
+        function placePrediction(arenaId, competitor) {
+            if (!connectedAccount) {
+                alert('Please connect your Web3 wallet to place a prediction.');
+                return;
+            }
+            if (currentXP < 10) {
+                alert('You need at least 10 XP to place a prediction! Claim your welcome airdrop first.');
+                return;
+            }
+            currentXP -= 10;
+            document.getElementById('portfolioValue').innerText = currentXP + ' XP';
+            alert(`Prediction placed on ${competitor}! 10 XP deducted.`);
+        }
+    </script>
+</body>
+</html>
