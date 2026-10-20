@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ascend Battles</title>
+    <title>Ascend Battles | Ascend Launchpad</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: #0b0e11; color: #ffffff; padding: 16px; padding-bottom: 40px; }
@@ -40,8 +40,8 @@
 
         .competitor { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .comp-info { display: flex; align-items: center; gap: 8px; }
-        .icon { width: 28px; height: 28px; border-radius: 50%; background: #ffb703; color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-        .comp-name { font-weight: 700; font-size: 14px; }
+        .icon { width: 32px; height: 32px; border-radius: 50%; background: #ffb703; color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+        .comp-name { font-weight: 700; font-size: 13px; }
         .odds-btn { background: #ffb703; color: #000; border: none; padding: 6px 14px; border-radius: 16px; font-weight: 800; font-size: 12px; cursor: pointer; }
 
         .battle-footer { display: flex; justify-content: space-between; font-size: 11px; color: #6b7785; border-top: 1px solid #1f2630; padding-top: 10px; margin-top: 10px; }
@@ -85,68 +85,69 @@
             <div class="portfolio-title">Portfolio XP Balance</div>
             <div id="portfolioValue" class="portfolio-value">0 XP</div>
         </div>
-        <button class="earn-btn" onclick="alert('Earn extra XP by predicting live matchups!')">Earn XP</button>
+        <button class="earn-btn" onclick="alert('Earn extra XP by predicting live Ascend launchpool matchups!')">Earn XP</button>
     </div>
 
     <div class="section-header">
-        <div class="section-title">Live 1v1 PvP Battles</div>
-        <div class="badge">Elysium Testnet 99801</div>
+        <div class="section-title">Live Ascend Launchpad & Staking Battles</div>
+        <div class="badge">Elysium Network</div>
     </div>
 
     <div id="arenasContainer">
-        <!-- Rendered instantly on load -->
+        <!-- Matchup 1: Ascend Core Mechanics (kHYPE Staking Yield vs KNTQ Revenue Pool) -->
         <div class="battle-card">
             <div class="battle-meta">
-                <span class="tag">WEB3 ECOSYSTEM vs ECOSYSTEM</span>
-                <span class="timer">Closes in 04h 22m</span>
+                <span class="tag">ASCEND REVENUE & YIELD</span>
+                <span class="timer">Closes in 08h 15m</span>
             </div>
             <div class="competitor">
                 <div class="comp-info">
-                    <div class="icon">CENT</div>
-                    <div class="comp-name">Incentiv ($CENT)</div>
+                    <div class="icon">kHYPE</div>
+                    <div class="comp-name">kHYPE Staking Pool</div>
                 </div>
-                <button class="odds-btn" onclick="placePrediction(1, 'Incentiv ($CENT)')">1.85x</button>
+                <button class="odds-btn" onclick="placePrediction(1, 'kHYPE Staking Pool')">1.75x</button>
             </div>
             <div class="competitor">
                 <div class="comp-info">
-                    <div class="icon" style="background: #29b6f6; color: #fff;">MVRK</div>
-                    <div class="comp-name">Mavryk Network ($MVRK)</div>
+                    <div class="icon" style="background: #29b6f6; color: #fff;">KNTQ</div>
+                    <div class="comp-name">KNTQ Protocol Buyback</div>
                 </div>
-                <button class="odds-btn" style="background: #29b6f6; color: #fff;" onclick="placePrediction(1, 'Mavryk Network ($MVRK)')">2.15x</button>
+                <button class="odds-btn" style="background: #29b6f6; color: #fff;" onclick="placePrediction(1, 'KNTQ Protocol Buyback')">2.15x</button>
             </div>
             <div class="battle-footer">
-                <div class="sponsor">Sponsor Pool: <span>$50.00 USDC</span></div>
-                <div class="predictors">Predictors: <span>142 Players</span></div>
+                <div class="sponsor">Fee Yield: <span>1% Trading Share</span></div>
+                <div class="predictors">Stakers: <span>1,240 Players</span></div>
             </div>
         </div>
 
+        <!-- Matchup 2: Ascend Token Lifecycle (Closed Hook Pool vs Ascended Status) -->
         <div class="battle-card">
             <div class="battle-meta">
-                <span class="tag">GAMEFI vs AI GAMING</span>
-                <span class="timer">Closes in 18h 05m</span>
+                <span class="tag">ASCEND LAUNCH LIFECYCLE</span>
+                <span class="timer">Closes in 22h 40m</span>
             </div>
             <div class="competitor">
                 <div class="comp-info">
-                    <div class="icon">V8</div>
-                    <div class="comp-name">Verse8 AI Engine</div>
+                    <div class="icon" style="background: #a855f7; color: #fff;">POOL</div>
+                    <div class="comp-name">Elysium Closed Hook Pool</div>
                 </div>
-                <button class="odds-btn" onclick="placePrediction(2, 'Verse8 AI Engine')">1.75x</button>
+                <button class="odds-btn" style="background: #a855f7; color: #fff;" onclick="placePrediction(2, 'Elysium Closed Hook Pool')">1.85x</button>
             </div>
             <div class="competitor">
                 <div class="comp-info">
-                    <div class="icon" style="background: #29b6f6; color: #fff;">DEGEN</div>
-                    <div class="comp-name">Degen Brawlers</div>
+                    <div class="icon" style="background: #00e676; color: #000;">ASCN</div>
+                    <div class="comp-name">Ascended Verified Pool</div>
                 </div>
-                <button class="odds-btn" style="background: #29b6f6; color: #fff;" onclick="placePrediction(2, 'Degen Brawlers')">2.40x</button>
+                <button class="odds-btn" style="background: #00e676; color: #000;" onclick="placePrediction(2, 'Ascended Verified Pool')">2.05x</button>
             </div>
             <div class="battle-footer">
-                <div class="sponsor">Sponsor Pool: <span>$100.00 USDC</span></div>
-                <div class="predictors">Predictors: <span>310 Players</span></div>
+                <div class="sponsor">Buyback Pool: <span>$1,000,000 Cap</span></div>
+                <div class="predictors">Predictors: <span>890 Players</span></div>
             </div>
         </div>
     </div>
 
-        <!-- Learn More Modal -->
+    <!-- Learn More Modal -->
     <div id="learnModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -154,39 +155,16 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p><strong>Ascend Battles</strong> is an automated project matchmaking and 1v1 prediction trading platform built directly on <strong>Ascend (@AscendLaunch)</strong>—the next-generation launchpad for the <strong>Elysium</strong> ecosystem.</p>
+                <p><strong>Ascend Battles</strong> is an automated project matchmaking and 1v1 prediction trading platform built directly for <strong>Ascend (@AscendLaunch)</strong>—the token launch and lifecycle infrastructure for the <strong>Elysium L2</strong> network.</p>
                 <br>
                 <p><strong>How It Works:</strong></p>
                 <ul>
-                    <li><strong>Web3 Wallet Sync:</strong> Connect your EVM/Elysium wallet seamlessly.</li>
-                    <li><strong>Free XP System:</strong> Claim your welcome airdrop of +200 XP to predict project performance with zero financial risk.</li>
-                    <li><strong>Predict Matchups:</strong> Back top projects launching on Ascend (like Incentiv, Mavryk, or Verse8) in head-to-head 1v1 battles.</li>
+                    <li><strong>Web3 Wallet Sync:</strong> Connect your wallet securely using standard Web3 EVM / Elysium providers.</li>
+                    <li><strong>Free XP System:</strong> Claim your welcome airdrop of +200 XP to predict performance with zero financial risk.</li>
+                    <li><strong>Predict Matchups:</strong> Back native Ascend pools (kHYPE staking yield, KNTQ protocol buybacks, and Ascended status projects) in head-to-head 1v1 battles.</li>
                     <li><strong>Leaderboards & Rewards:</strong> Accumulate XP for accurate predictions, climb global ranks, and position yourself for future ecosystem token yield and allocations.</li>
                 </ul>
-                <p style="color: #6b7785; font-size: 11px; margin-top: 10px;">Built for Ascend Launchpad on Elysium Testnet.</p>
-            </div>
-        </div>
-    </div>
-
-        
-
-
-    
-    
-                
-            
-            </div>
-            <div class="modal-body">
-                <p><strong>Ascend Battles</strong> is an automated project matchmaking and 1v1 prediction trading platform built for Web3 ecosystems.</p>
-                <br>
-                <p><strong>How It Works:</strong></p>
-                <ul>
-                    <li><strong>Web3 Wallet Sync:</strong> Connect your wallet securely using standard Web3 providers.</li>
-                    <li><strong>Free XP System:</strong> Claim your welcome airdrop of +200 XP to get started with zero financial risk.</li>
-                    <li><strong>Predict Matchups:</strong> Back top projects like Incentiv ($CENT), Mavryk ($MVRK), or Verse8 in head-to-head performance battles.</li>
-                    <li><strong>Leaderboards & Rewards:</strong> Accumulate XP for correct predictions to climb global rankings and unlock future ecosystem allocations.</li>
-                </ul>
-                <p style="color: #6b7785; font-size: 11px;">Powered by Elysium Testnet API & Render backend listener.</p>
+                <p style="color: #6b7785; font-size: 11px; margin-top: 10px;">Built for Ascend Launchpad on Elysium.</p>
             </div>
         </div>
     </div>
@@ -240,11 +218,3 @@
             if (currentXP < 10) {
                 alert('You need at least 10 XP to place a prediction! Claim your welcome airdrop first.');
                 return;
-            }
-            currentXP -= 10;
-            document.getElementById('portfolioValue').innerText = currentXP + ' XP';
-            alert(`Prediction placed on ${competitor}! 10 XP deducted.`);
-        }
-    </script>
-</body>
-</html>
