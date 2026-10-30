@@ -30,10 +30,23 @@ async function getLiveAscendTokens() {
       });
     }
     return dynamicArenas;
-  } catch (error) {
+   } catch (error) {
     console.error("Error fetching live tokens, falling back to cached array:", error);
-    return [];
+    // Return default Ascend testnet tokens as fallback
+    return [
+      {
+        id: "arena-1",
+        competitorA: { code: "ASCEND", name: "Ascend Token", address: "0x..." },
+        competitorB: { code: "ELY", name: "Elysium Token", address: "0x..." },
+        sponsorPool: "$1,000 USDC",
+        predictors: 120
+      }
+    ];
   }
+
+
+    
+  
 }
 
 const server = http.createServer(async (req, res) => {
