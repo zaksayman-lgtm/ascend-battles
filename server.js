@@ -2,13 +2,11 @@ const http = require('http');
 
 const PORT = process.env.PORT || 3001;
 
-// Updated to Kinetiq's Elysium Testnet configuration (Chain ID: 99801, Native: HYPE)
-const ELYSIUM_TESTNET_RPC = process.env.ELYSIUM_RPC || "https://rpc-testnet.elysium.kinetiq.xyz";
-const ASCEND_FACTORY_ADDRESS = process.env.ASCEND_FACTORY || "0x0000000000000000000000000000000000000000"; 
+// Official Kinetiq Elysium Testnet RPC URL (Chain ID: 99801)
+const ELYSIUM_TESTNET_RPC = process.env.ELYSIUM_RPC || "https://testnet-rpc.elysium.kinetiq.xyz";
 
 async function getLiveAscendTokens() {
   try {
-    // Standard RPC JSON-RPC payload to read token logs / events or API endpoint on Chain 99801
     const res = await fetch(ELYSIUM_TESTNET_RPC, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -20,12 +18,13 @@ async function getLiveAscendTokens() {
       })
     });
 
-    if (!res.ok) throw new Error("RPC unreachable");
+    if (!res.ok) throw new Error("RPC endpoint unreachable");
+    const data = await res.json();
+    console.log("Connected to Elysium Testnet block:", data.result);
     
-    // Fallback array structure updated with Kinetiq ecosystem context (HYPE base currency)
     return getKinetiqAscendArenas();
   } catch (error) {
-    console.error("RPC fetch error on Chain ID 99801, utilizing cached launchpad tokens:", error.message);
+    console.error("RPC fetch error on Chain ID 99801, utilizing cached tokens:", error.message);
     return getKinetiqAscendArenas();
   }
 }
